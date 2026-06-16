@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Re-Build Tech</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=reportes3">
 </head>
 <body>
     <header class="header">
@@ -17,6 +17,8 @@
             <a href="#inicio">Inicio</a>
             <a href="#nosotros">Nosotros</a>
             <a href="#impacto">Impacto</a>
+            <a href="materiales.html">Materiales</a>
+            <a href="#reportes">Reportes</a>
             <a href="#contacto">Contacto</a>
             <a href="#">Iniciar Sesión</a>
         </nav>
@@ -92,7 +94,7 @@
                 <h2>Del escombro al recurso</h2>
                 <p>Gestiona, traza y reutiliza RCD conectando obras con proyectos sociales y recicladoras.</p>
                 <button class="primary-btn">Registrar obra</button>
-                <button class="primary-btn">Ver materiales</button>
+               <a href="materiales.html" class="primary-btn" style="text-decoration: none; display: inline-block; text-align: center;">Ver materiales</a>
             </div>
             <article class="image-card">
                 <img src="img/escombro.png" alt="Impacto circular">
@@ -224,6 +226,137 @@
         </div>
     </section>
     <!-- ============================================================ -->
+
+    <section class="report-preview" id="reportes">
+        <div class="section-title report-section-title">
+            <h2>Reportes de impacto</h2>
+        </div>
+        <div class="report-app">
+            <aside class="report-sidebar">
+                <a class="report-side-link active" href="#reportes">
+                    <span class="side-icon chart-icon"></span>
+                    Reportes
+                </a>
+                <a class="report-side-link" href="#reportes">
+                    <span class="side-icon download-icon"></span>
+                    Descargar
+                </a>
+                <a class="report-side-link" href="#reportes">
+                    <span class="side-icon clock-icon"></span>
+                    Historial
+                </a>
+                <a class="report-side-link" href="#reportes">
+                    <span class="side-icon metric-icon"></span>
+                    Métricas
+                </a>
+            </aside>
+
+            <main class="report-main">
+                <h2>Reporte</h2>
+
+                <div class="report-summary">
+                    <article class="report-card">
+                        <div class="summary-label">
+                            <span class="summary-icon recycle-icon"></span>
+                            Reciclaje Diario
+                        </div>
+                        <strong>90 kg</strong>
+                        <p>Mayormente escombros</p>
+                    </article>
+
+                    <article class="report-card">
+                        <div class="summary-label">
+                            <span class="summary-icon truck-icon"></span>
+                            Reciclaje Semanal
+                        </div>
+                        <strong>2 tn</strong>
+                        <p>Entre madera y escombros</p>
+                    </article>
+
+                    <article class="report-card">
+                        <div class="summary-label">
+                            <span class="summary-icon home-icon"></span>
+                            Viviendas beneficiadas
+                        </div>
+                        <strong>12%</strong>
+                        <p>Por encima del promedio</p>
+                    </article>
+                </div>
+
+                <div class="report-detail-grid">
+                    <section class="report-panel impact-panel">
+                        <div class="panel-title-row">
+                            <h3>Impacto ambiental</h3>
+                            <button class="chart-select" type="button">
+                                <span class="mini-bars"></span>
+                                Barras
+                            </button>
+                        </div>
+                        <div class="bar-chart" aria-label="Impacto ambiental por día">
+                            <div class="y-axis">
+                                <span>100</span>
+                                <span>80</span>
+                                <span>60</span>
+                                <span>40</span>
+                                <span>20</span>
+                                <span>0</span>
+                            </div>
+                            <div class="bars">
+                                <div class="bar-wrap" data-value="42 kg"><span class="bar" style="height: 29%;"></span><small>01 May</small></div>
+                                <div class="bar-wrap" data-value="55 kg"><span class="bar" style="height: 37%;"></span><small>02 May</small></div>
+                                <div class="bar-wrap" data-value="61 kg"><span class="bar" style="height: 49%;"></span><small>03 May</small></div>
+                                <div class="bar-wrap" data-value="75 kg"><span class="bar" style="height: 60%;"></span><small>04 May</small></div>
+                                <div class="bar-wrap" data-value="81 kg"><span class="bar" style="height: 69%;"></span><small>05 May</small></div>
+                                <div class="bar-wrap" data-value="95 kg"><span class="bar" style="height: 80%;"></span><small>06 May</small></div>
+                                <div class="bar-wrap" data-value="100 kg"><span class="bar" style="height: 92%;"></span><small>07 May</small></div>
+                            </div>
+                        </div>
+                        <p class="report-muted">Toca una tabla para ver detalles del día</p>
+                    </section>
+
+                    <section class="report-panel match-panel">
+                        <h3>Desglose por match</h3>
+                        <div class="donut-area">
+                            <div class="donut-chart">
+                                <span>Total<br><strong>48</strong><br>matches</span>
+                            </div>
+                            <ul class="donut-legend">
+                                <li><span class="legend-dot wood"></span>Madera <strong>45%</strong></li>
+                                <li><span class="legend-dot debris"></span>Escombros <strong>35%</strong></li>
+                                <li><span class="legend-dot metal"></span>Metales <strong>15%</strong></li>
+                                <li><span class="legend-dot other"></span>Otros <strong>5%</strong></li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="report-panel trend-panel">
+                    <h3>Tendencia mensual</h3>
+                    <svg class="trend-chart" viewBox="0 0 880 110" role="img" aria-label="Tendencia mensual por semana">
+                        <defs>
+                            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="#2e7d32" stop-opacity="0.18" />
+                                <stop offset="100%" stop-color="#2e7d32" stop-opacity="0.02" />
+                            </linearGradient>
+                        </defs>
+                        <path class="trend-grid" d="M34 8H858M34 30H858M34 52H858M34 74H858M34 96H858" />
+                        <path class="trend-fill" d="M78 74 L318 58 L558 62 L798 30 L798 96 L78 96 Z" />
+                        <path class="trend-line" d="M78 74 L318 58 L558 62 L798 30" />
+                        <circle cx="78" cy="74" r="4" />
+                        <circle cx="318" cy="58" r="4" />
+                        <circle cx="558" cy="62" r="4" />
+                        <circle cx="798" cy="30" r="4" />
+                    </svg>
+                    <div class="trend-labels">
+                        <span>Semana 1</span>
+                        <span>Semana 2</span>
+                        <span>Semana 3</span>
+                        <span>Semana 4</span>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </section>
 
     <section class="section" id="contacto">
         <div class="section-title">
