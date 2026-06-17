@@ -1157,6 +1157,99 @@ body {
     text-align: center;
 }
 
+/* --- Login --- */
+.login-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 520px;
+    padding: 105px 5%;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 86px;
+    align-items: center;
+}
+
+.login-copy h2 {
+    color: #2e7d32;
+    font-size: 2.45rem;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 16px;
+}
+
+.login-copy p {
+    color: #4b5563;
+    font-size: 1rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.login-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #111827;
+    font-size: 0.9rem;
+}
+
+.login-form input {
+    width: 100%;
+    height: 48px;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form input::placeholder {
+    color: #9ca3af;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.login-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding-top: 10px;
+}
+
+.secondary-btn {
+    min-height: 44px;
+    padding: 11px 22px;
+    border: 1px solid #111827;
+    border-radius: 6px;
+    background: transparent;
+    color: #111827;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.secondary-btn:hover {
+    transform: translateY(-3px);
+    border-color: #2e7d32;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+.login-submit {
+    min-height: 44px;
+    padding: 11px 22px;
+    border-radius: 6px;
+}
+
 /*Responsive*/
 @media (max-width: 992px) {
     .hero { grid-template-columns: 1fr; }
@@ -1231,6 +1324,12 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .login-section {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-top: 60px;
+    }
+
 }
 
 @media (max-width: 768px) {
@@ -1288,6 +1387,10 @@ body {
 
     .bar {
         width: 24px;
+    }
+
+    .login-actions {
+        grid-template-columns: 1fr;
     }
 
 }
