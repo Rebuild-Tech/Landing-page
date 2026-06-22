@@ -9,7 +9,7 @@
 <body>
     <header class="header">
         <div class="brand">
-            <img src="img/logo.png" alt="Logo Re-Build Tech">
+            <img src="public/assets/images/logo.png" alt="Logo Re-Build Tech">
             <h2>Re-Build Tech</h2>
         </div>
 
@@ -17,17 +17,17 @@
             <a href="#inicio">Inicio</a>
             <a href="#nosotros">Nosotros</a>
             <a href="#impacto">Impacto</a>
-            <a href="materiales.html">Materiales</a>
-            <a href="#reportes">Reportes</a>
+            <a href="materials.html">Materiales</a>
+            <a href="dashboard.html#reportes">Reportes</a>
             <a href="#contacto">Contacto</a>
-            <a href="#login">Iniciar Sesión</a>
+            <a href="login.html#inicio">Iniciar Sesión</a>
         </nav>
     </header>
 
     <main class="hero" id="inicio">
         <section class="hero-image">
             <div class="image-card">
-                <img src="img/crear.png" alt="Del escombro al recurso">
+                <img src="public/assets/images/crear.png" alt="Del escombro al recurso">
                 <h3>Del escombro al recurso</h3>
                 <p>Conectamos obras con proyectos sociales y recicladoras para un futuro sostenible.</p>
             </div>
@@ -36,7 +36,7 @@
         <section class="hero-content">
             <h2>CREAR CUENTA NUEVA</h2>
             
-            <div class="video-content">
+            <div class="info-content">
                  <p>Nombre de la empresa</p>
                  <input type="text">
 
@@ -50,38 +50,39 @@
                  <p>Confirmar contraseña</p>
                  <input type="password" placeholder="••••••••">
             </div>
-
-            <button class="primary-btn">REGISTRARSE</button>
+            
+            <a href="dashboard.html" class="primary-btn" style="text-decoration: none; display: inline-block; text-align: center;">REGISTRARSE</a>
+            
         </section>
     </main>
 
     <section class="section servicios" id="nosotros">
         <div class="section-title">
-            <img src="img/nosotros.png" alt="Sobre Nosotros">
+            <img src="public/assets/images/nosotros.png" alt="Sobre Nosotros">
             <h2>Sobre Nosotros</h2>
             <p>Conoce más sobre nuestra historia y visión.</p>
         </div>
         <div class="cards">
             <article class="card">
-                <div class="icon-box"><img src="img/camion.png" alt="Misión"></div>
+                <div class="icon-box"><img src="public/assets/images/camion.png" alt="Misión"></div>
                 <h3>Nuestra Misión</h3>
                 <p>Gestionar y reutilizar residuos de construcción de forma sostenible.</p>
             </article>
 
             <article class="card">
-                <div class="icon-box"><img src="img/hojas.png" alt="Visión"></div>
+                <div class="icon-box"><img src="public/assets/images/hojas.png" alt="Visión"></div>
                 <h3>Nuestra Visión</h3>
                 <p>Liderar la economía circular en construcción en el Perú.</p>
             </article>
 
             <article class="card">
-                <div class="icon-box"><img src="img/mundo.png" alt="Valores"></div>
+                <div class="icon-box"><img src="public/assets/images/mundo.png" alt="Valores"></div>
                 <h3>Valores</h3>
                 <p>Sostenibilidad, innovación, responsabilidad y compromiso.</p>
             </article>
 
             <article class="card">
-                <div class="icon-box"><img src="img/personas.png" alt="Equipo"></div>
+                <div class="icon-box"><img src="public/assets/images/personas.png" alt="Equipo"></div>
                 <h3>Nuestro equipo</h3>
                 <p>Equipo altamente capacitado en el rubro.</p>
             </article>
@@ -89,15 +90,15 @@
     </section>
 
     <section class="section portafolio" id="impacto">
-        <div class="video-grid">
-            <div class="video-content">
+        <div class="info-grid">
+            <div class="info-content">
                 <h2>Del escombro al recurso</h2>
                 <p>Gestiona, traza y reutiliza RCD conectando obras con proyectos sociales y recicladoras.</p>
                 <button class="primary-btn">Registrar obra</button>
-               <a href="materiales.html" class="primary-btn" style="text-decoration: none; display: inline-block; text-align: center;">Ver materiales</a>
+               <a href="materials.html" class="primary-btn" style="text-decoration: none; display: inline-block; text-align: center;">Ver materiales</a>
             </div>
             <article class="image-card">
-                <img src="img/escombro.png" alt="Impacto circular">
+                <img src="public/assets/images/escombro.png" alt="Impacto circular">
             </article>
         </div>
     </section>
@@ -126,28 +127,28 @@
         <div class="section-title">
             <h2>Materiales disponibles</h2>
         </div>
-        <div class="video-grid">
-            <article class="video-card">
-                <img src="img/piedras.png" alt="Concreto">
-                <div class="video-content">
+        <div class="info-grid">
+            <article class="info-card">
+                <img src="public/assets/images/piedras.png" alt="Concreto">
+                <div class="info-content">
                     <h3>Concreto triturado</h3>
                     <p>12 m3 - San Borja<br>CO2 estimado: 0.6 t</p>
                     <button class="primary-btn">Solicitar match</button>
                 </div>
             </article>
 
-            <article class="video-card">
-                <img src="img/ladrillos.png" alt="Ladrillos">
-                <div class="video-content">
+            <article class="info-card">
+                <img src="public/assets/images/ladrillos.png" alt="Ladrillos">
+                <div class="info-content">
                     <h3>Ladrillos reutilizables</h3>
                     <p>500 und - La Molina<br>CO2 estimado: 0.4 t</p>
                     <button class="primary-btn">Solicitar match</button>
                 </div>
             </article>
 
-            <article class="video-card">
-                <img src="img/madera.png" alt="Metal">
-                <div class="video-content">
+            <article class="info-card">
+                <img src="public/assets/images/madera.png" alt="Metal">
+                <div class="info-content">
                     <h3>Metal recuperado</h3>
                     <p>280 kg - San Isidro<br>CO2 estimado: 1.1 t</p>
                     <button class="primary-btn">Solicitar match</button>
@@ -156,241 +157,15 @@
         </div>
     </section>
 
-    <!-- PANEL DE CONTROL - CONSTRUCTORAS Y CONTRATISTAS   -->
-    <section id="panel" class="section panel-section">
-        <div class="panel-header">
-            <h2>Panel de control para constructoras y contratistas</h2>
-            <div class="panel-tabs">
-                <button class="panel-tab panel-tab--active">Inventario</button>
-                <button class="panel-tab">Mapa</button>
-                <button class="panel-tab">Matches</button>
-                <button class="panel-tab">Reportes</button>
-            </div>
-        </div>
-
-        <!-- KPI Cards -->
-        <div class="panel-kpis">
-            <div class="panel-kpi-card">
-                <span class="panel-kpi-value">48 t</span>
-                <span class="panel-kpi-label">Toneladas registradas</span>
-            </div>
-            <div class="panel-kpi-card">
-                <span class="panel-kpi-value">62%</span>
-                <span class="panel-kpi-label">RCD reutilizado</span>
-            </div>
-            <div class="panel-kpi-card">
-                <span class="panel-kpi-value">12.4 t</span>
-                <span class="panel-kpi-label">Ahorro CO2</span>
-            </div>
-            <div class="panel-kpi-card">
-                <span class="panel-kpi-value">7</span>
-                <span class="panel-kpi-label">Matches activos</span>
-            </div>
-        </div>
-
-        <!-- Formulario + Lotes -->
-        <div class="panel-body">
-
-            <!-- Formulario: Registrar nuevo lote -->
-            <div class="panel-form-card">
-                <h3>Registrar nuevo lote RCD</h3>
-                <div class="panel-form">
-                    <input type="text" placeholder="Tipo de material">
-                    <input type="text" placeholder="Volumen disponible">
-                    <input type="text" placeholder="Estado del residuo">
-                    <input type="text" placeholder="Ubicación de obra">
-                    <input type="text" placeholder="Foto / evidencia">
-                    <button class="primary-btn panel-form-btn">Guardar lote</button>
-                </div>
-            </div>
-
-            <!-- Lotes en seguimiento -->
-            <div class="panel-lotes-card">
-                <h3>Lotes en seguimiento</h3>
-                <div class="panel-lotes">
-                    <div class="panel-lote panel-lote--disponible">
-                        <span class="panel-lote-dot panel-lote-dot--disponible"></span>
-                        <span>Concreto triturado · <strong>Disponible</strong> · San Borja</span>
-                    </div>
-                    <div class="panel-lote panel-lote--solicitado">
-                        <span class="panel-lote-dot panel-lote-dot--solicitado"></span>
-                        <span>Ladrillos · <strong>Solicitado</strong> · La Molina</span>
-                    </div>
-                    <div class="panel-lote panel-lote--traslado">
-                        <span class="panel-lote-dot panel-lote-dot--traslado"></span>
-                        <span>Metal recuperado · <strong>En traslado</strong> · San Isidro</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-    <!-- ============================================================ -->
-
-    <section class="report-preview" id="reportes">
-        <div class="section-title report-section-title">
-            <h2>Reportes de impacto</h2>
-        </div>
-        <div class="report-app">
-            <aside class="report-sidebar">
-                <a class="report-side-link active" href="#reportes">
-                    <span class="side-icon chart-icon"></span>
-                    Reportes
-                </a>
-                <a class="report-side-link" href="#reportes">
-                    <span class="side-icon download-icon"></span>
-                    Descargar
-                </a>
-                <a class="report-side-link" href="#reportes">
-                    <span class="side-icon clock-icon"></span>
-                    Historial
-                </a>
-                <a class="report-side-link" href="#reportes">
-                    <span class="side-icon metric-icon"></span>
-                    Métricas
-                </a>
-            </aside>
-
-            <main class="report-main">
-                <h2>Reporte</h2>
-
-                <div class="report-summary">
-                    <article class="report-card">
-                        <div class="summary-label">
-                            <span class="summary-icon recycle-icon"></span>
-                            Reciclaje Diario
-                        </div>
-                        <strong>90 kg</strong>
-                        <p>Mayormente escombros</p>
-                    </article>
-
-                    <article class="report-card">
-                        <div class="summary-label">
-                            <span class="summary-icon truck-icon"></span>
-                            Reciclaje Semanal
-                        </div>
-                        <strong>2 tn</strong>
-                        <p>Entre madera y escombros</p>
-                    </article>
-
-                    <article class="report-card">
-                        <div class="summary-label">
-                            <span class="summary-icon home-icon"></span>
-                            Viviendas beneficiadas
-                        </div>
-                        <strong>12%</strong>
-                        <p>Por encima del promedio</p>
-                    </article>
-                </div>
-
-                <div class="report-detail-grid">
-                    <section class="report-panel impact-panel">
-                        <div class="panel-title-row">
-                            <h3>Impacto ambiental</h3>
-                            <button class="chart-select" type="button">
-                                <span class="mini-bars"></span>
-                                Barras
-                            </button>
-                        </div>
-                        <div class="bar-chart" aria-label="Impacto ambiental por día">
-                            <div class="y-axis">
-                                <span>100</span>
-                                <span>80</span>
-                                <span>60</span>
-                                <span>40</span>
-                                <span>20</span>
-                                <span>0</span>
-                            </div>
-                            <div class="bars">
-                                <div class="bar-wrap" data-value="42 kg"><span class="bar" style="height: 29%;"></span><small>01 May</small></div>
-                                <div class="bar-wrap" data-value="55 kg"><span class="bar" style="height: 37%;"></span><small>02 May</small></div>
-                                <div class="bar-wrap" data-value="61 kg"><span class="bar" style="height: 49%;"></span><small>03 May</small></div>
-                                <div class="bar-wrap" data-value="75 kg"><span class="bar" style="height: 60%;"></span><small>04 May</small></div>
-                                <div class="bar-wrap" data-value="81 kg"><span class="bar" style="height: 69%;"></span><small>05 May</small></div>
-                                <div class="bar-wrap" data-value="95 kg"><span class="bar" style="height: 80%;"></span><small>06 May</small></div>
-                                <div class="bar-wrap" data-value="100 kg"><span class="bar" style="height: 92%;"></span><small>07 May</small></div>
-                            </div>
-                        </div>
-                        <p class="report-muted">Toca una tabla para ver detalles del día</p>
-                    </section>
-
-                    <section class="report-panel match-panel">
-                        <h3>Desglose por match</h3>
-                        <div class="donut-area">
-                            <div class="donut-chart">
-                                <span>Total<br><strong>48</strong><br>matches</span>
-                            </div>
-                            <ul class="donut-legend">
-                                <li><span class="legend-dot wood"></span>Madera <strong>45%</strong></li>
-                                <li><span class="legend-dot debris"></span>Escombros <strong>35%</strong></li>
-                                <li><span class="legend-dot metal"></span>Metales <strong>15%</strong></li>
-                                <li><span class="legend-dot other"></span>Otros <strong>5%</strong></li>
-                            </ul>
-                        </div>
-                    </section>
-                </div>
-
-                <section class="report-panel trend-panel">
-                    <h3>Tendencia mensual</h3>
-                    <svg class="trend-chart" viewBox="0 0 880 110" role="img" aria-label="Tendencia mensual por semana">
-                        <defs>
-                            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
-                                <stop offset="0%" stop-color="#2e7d32" stop-opacity="0.18" />
-                                <stop offset="100%" stop-color="#2e7d32" stop-opacity="0.02" />
-                            </linearGradient>
-                        </defs>
-                        <path class="trend-grid" d="M34 8H858M34 30H858M34 52H858M34 74H858M34 96H858" />
-                        <path class="trend-fill" d="M78 74 L318 58 L558 62 L798 30 L798 96 L78 96 Z" />
-                        <path class="trend-line" d="M78 74 L318 58 L558 62 L798 30" />
-                        <circle cx="78" cy="74" r="4" />
-                        <circle cx="318" cy="58" r="4" />
-                        <circle cx="558" cy="62" r="4" />
-                        <circle cx="798" cy="30" r="4" />
-                    </svg>
-                    <div class="trend-labels">
-                        <span>Semana 1</span>
-                        <span>Semana 2</span>
-                        <span>Semana 3</span>
-                        <span>Semana 4</span>
-                    </div>
-                </section>
-            </main>
-        </div>
-    </section>
-
-    <section class="login-section" id="login">
-        <div class="login-copy">
-            <h2>Iniciar Sesión</h2>
-            <p>Accede a tu cuenta para ver tu consumo de energía.</p>
-        </div>
-
-        <form class="login-form">
-            <label>
-                <span>Correo Electrónico</span>
-                <input type="email" placeholder="Ingresa tu correo electrónico">
-            </label>
-
-            <label>
-                <span>Contraseña</span>
-                <input type="password" placeholder="Ingresa tu contraseña">
-            </label>
-
-            <div class="login-actions">
-                <button class="secondary-btn" type="button">Olvidé mi contraseña</button>
-                <button class="primary-btn login-submit" type="submit">Iniciar Sesión</button>
-            </div>
-        </form>
-    </section>
-
     <section class="section" id="contacto">
         <div class="section-title">
             <h2>Contáctanos</h2>
-            <img src="img/contacto.png" alt="Contacto">
+            <img src="public/assets/images/contacto.png" alt="Contacto">
         </div>
 
         <main class="hero">
             <section class="hero-content">
-                <div class="video-content">
+                <div class="info-content">
                      <p>Nombre</p>
                      <input type="text">
 
@@ -409,13 +184,13 @@
             <section class="hero-image">
                 <div class="image-card">
                     <div>
-                        <img src="img/facebook.png" alt="Facebook">
-                        <img src="img/linkedin.png" alt="LinkedIn">
-                        <img src="img/insta.png" alt="Instagram">
+                        <img src="public/assets/images/facebook.png" alt="Facebook">
+                        <img src="public/assets/images/linkedin.png" alt="LinkedIn">
+                        <img src="public/assets/images/insta.png" alt="Instagram">
                     </div>
                     
                     <div>
-                        <img src="img/telefono.png" alt="Teléfono">
+                        <img src="public/assets/images/telefono.png" alt="Teléfono">
                         <div>
                             <p>Teléfono</p>
                             <p>+51 987 654 321</p>
@@ -423,7 +198,7 @@
                     </div>
 
                     <div>
-                        <img src="img/correo.png" alt="Correo">
+                        <img src="public/assets/images/correo.png" alt="Correo">
                         <div>
                             <p>Correo</p>
                             <p>contacto@rebuildtech.com</p>
