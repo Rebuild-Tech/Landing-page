@@ -14,6 +14,8 @@ body {
     background-color: #f7f9f7;
     color: #333;
     line-height: 1.6;
+
+    margin: 0;
 }
 
 /*Header & Nav*/
@@ -127,21 +129,21 @@ body {
 }
 
 /*Formularios Globales*/
-.video-content p {
+.info-content p {
     margin-bottom: 5px;
     font-size: 0.9rem;
     color: #555;
 }
 
-.video-content p:nth-of-type(4) {
+.info-content p:nth-of-type(4) {
     font-size: 0.75rem;
     color: #888;
     margin-top: -5px;
     margin-bottom: 15px;
 }
 
-.video-content input,
-.video-content textarea {
+.info-content input,
+.info-content textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -150,8 +152,8 @@ body {
     transition: all 0.3s ease;
 }
 
-.video-content input:focus,
-.video-content textarea:focus {
+.info-content input:focus,
+.info-content textarea:focus {
     outline: none;
     border-color: #2e7d32;
     box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
@@ -198,7 +200,7 @@ body {
 }
 
 /*Impacto (Banner)*/
-#impacto .video-grid {
+#impacto .info-grid {
     background-color: #2e7d32;
     padding: 40px;
     border-radius: 12px;
@@ -207,13 +209,13 @@ body {
     align-items: center;
 }
 
-#impacto .video-content h2 {
+#impacto .info-content h2 {
     color: white;
     font-size: 2.2rem;
     margin-bottom: 10px;
 }
 
-#impacto .video-content p {
+#impacto .info-content p {
     color: white;
     margin-bottom: 25px;
     font-size: 1.1rem;
@@ -266,13 +268,13 @@ body {
     text-align: left;
 }
 
-.portafolio:not(#impacto) .video-grid {
+.portafolio:not(#impacto) .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
-.video-card {
+.info-card {
     display: flex;
     gap: 15px;
     align-items: center;
@@ -283,34 +285,34 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.video-card:hover {
+.info-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-.video-card .video-content {
+.info-card .info-content {
     text-align: left;
     width: 100%;
 }
 
-.video-card .video-content h3 {
+.info-card .info-content h3 {
     font-size: 1rem;
     margin-bottom: 5px;
 }
 
-.video-card .video-content p {
+.info-card .info-content p {
     font-size: 0.85rem;
     margin-bottom: 10px;
 }
 
-.video-card .primary-btn {
+.info-card .primary-btn {
     background-color: #ffb300;
     color: #333;
     width: 100%;
     padding: 8px;
 }
 
-.video-card .primary-btn:hover {
+.info-card .primary-btn:hover {
     background-color: #ffa000;
 }
 
@@ -505,8 +507,7 @@ body {
 .panel-lote-dot--solicitado { background-color: #ffb300; }
 .panel-lote-dot--traslado   { background-color: #9e9e9e; }
 
-/* ===========================puntos corregidos, ahora otro apartado
-================================= */
+
 
 /*Contacto*/
 #contacto .section-title {
@@ -526,8 +527,8 @@ body {
     grid-template-columns: 2fr 1fr;
 }
 
-#contacto .video-content input,
-#contacto .video-content textarea {
+#contacto .info-content input,
+#contacto .info-content textarea {
     background-color: #eef2ef;
     border: none;
 }
@@ -582,8 +583,9 @@ body {
 .footer {
     background-color: #222222;
     padding: 30px 5%;
-    margin-top: 60px;
     text-align: center;
+
+    margin-top: auto;
 }
 
 .footer p {
@@ -1254,7 +1256,7 @@ body {
 @media (max-width: 992px) {
     .hero { grid-template-columns: 1fr; }
 
-    #impacto .video-grid {
+    #impacto .info-grid {
         grid-template-columns: 1fr;
         text-align: center;
     }
@@ -1346,17 +1348,17 @@ body {
 
     .cards { grid-template-columns: 1fr; }
 
-    .video-card {
+    .info-card {
         flex-direction: column;
         text-align: center;
     }
 
-    .video-card img {
+    .info-card img {
         width: 100%;
         height: 180px;
     }
 
-    .video-card .video-content { text-align: center; }
+    .info-card .info-content { text-align: center; }
 
     .panel-kpis { grid-template-columns: 1fr 1fr; }
 
@@ -1415,4 +1417,183 @@ body {
     }
 }
 
-/*Los puntos estan bien y compilan*/
+
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Hero Banner Principal */
+.hero-banner {
+    background-color: #eaf5eb; 
+    border-radius: 12px;
+    padding: 30px 40px;
+}
+
+.hero-banner h1 {
+    color: #2e7d32;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.hero-banner p {
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Grilla de Filtros */
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.filter-box {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: #111827;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Layout Dividido (Mapa y Resultados) */
+.main-content-split {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+}
+
+.content-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.content-card h2 {
+    color: #2e7d32;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+/* Lista de Resultados */
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+    margin-bottom: 24px;
+}
+
+.result-item {
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #111827;
+}
+
+.alert-yellow {
+    background-color: #fef3c7; 
+}
+
+.alert-green {
+    background-color: #eaf5eb; 
+}
+
+/* Botones de Acción */
+.action-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.btn-orange {
+    background-color: #f59e0b;
+    color: #111827;
+}
+
+.btn-green {
+    background-color: #2e7d32;
+    color: #ffffff;
+}
+
+/* Tarjeta de Impacto Estimado */
+.impact-card {
+    flex-direction: row; 
+    align-items: center;
+    justify-content: flex-start;
+    gap: 32px;
+    padding: 24px 32px;
+}
+
+.impact-card h2 {
+    margin-bottom: 0;
+}
+
+.impact-metrics {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.metric-box {
+    background-color: #f3f4f6;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+
+@media (max-width: 992px) {
+    .filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .main-content-split {
+        grid-template-columns: 1fr;
+    }
+    
+    .impact-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
