@@ -1597,3 +1597,350 @@ body {
         flex-direction: column;
     }
 }
+
+/* ============================================================
+   RBT — Componentes compartidos (toasts, modal, validación,
+   filtros activos, estados de match). Reutiliza la paleta y los
+   radios/espaciados ya definidos arriba; no se introducen
+   colores ni efectos nuevos.
+   ============================================================ */
+
+/* Toasts (US-045-NF) */
+.rbt-toast-host {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 3000;
+}
+
+.rbt-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    color: #222;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-left: 4px solid #2e7d32;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    max-width: 320px;
+}
+
+.rbt-toast--visible { opacity: 1; transform: translateY(0); }
+
+.rbt-toast-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-color: #2e7d32;
+}
+
+.rbt-toast--error { border-left-color: #c62828; }
+.rbt-toast--error .rbt-toast-dot { background-color: #c62828; }
+.rbt-toast--warn { border-left-color: #ffb300; }
+.rbt-toast--warn .rbt-toast-dot { background-color: #ffb300; }
+
+/* Modal genérico (detalle de material, recojo, historial) */
+.rbt-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(17, 24, 39, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 3100;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.rbt-modal-overlay--visible { opacity: 1; }
+
+.rbt-modal {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 28px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+}
+
+.rbt-modal h3 {
+    color: #2e7d32;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+}
+
+.rbt-modal p { color: #555; font-size: 0.92rem; margin-bottom: 14px; }
+
+.rbt-modal-close {
+    display: block;
+    margin: 18px 0 0 auto;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 4px;
+}
+
+.rbt-modal-close:hover { color: #2e7d32; }
+
+.rbt-modal-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.rbt-modal-row span:first-child { color: #777; }
+.rbt-modal-row span:last-child { color: #222; font-weight: 600; }
+
+/* Validación de formularios (US-044-NF) */
+.rbt-input-error { border-color: #c62828 !important; }
+
+.rbt-field-error {
+    display: block;
+    color: #c62828;
+    font-size: 0.75rem;
+    margin-top: -10px;
+    margin-bottom: 12px;
+}
+
+/* Filtros de materiales (activo) */
+.filter-box.filter-box--active,
+.map-filter-item.map-filter-item--active {
+    background-color: #2e7d32;
+    color: #ffffff;
+    border-color: #2e7d32;
+}
+
+.filter-box { cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+
+/* Buscador por distrito (US-018/028) */
+.rbt-search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.rbt-search-row input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.rbt-search-row input:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Estados de resultado (reutiliza alert-yellow/alert-green ya existentes) */
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.result-item:hover { transform: translateX(2px); }
+
+.result-item .rbt-mini-btn {
+    background-color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #1b4322;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.result-item .rbt-mini-btn:hover { background-color: #ffffff; }
+
+/* Toggle de alertas de proximidad (US-011) */
+.rbt-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.rbt-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    border-radius: 20px;
+    background-color: #d1d5db;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.rbt-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.rbt-switch--on { background-color: #2e7d32; }
+.rbt-switch--on::after { transform: translateX(18px); }
+
+/* Lotes: acciones editar/baja (EP02) */
+.panel-lote {
+    justify-content: space-between;
+}
+
+.panel-lote-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.panel-lote-actions { display: flex; gap: 8px; }
+
+.rbt-icon-btn {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.rbt-icon-btn:hover { border-color: #2e7d32; color: #2e7d32; }
+.rbt-icon-btn--danger:hover { border-color: #c62828; color: #c62828; }
+
+/* Estados de match (EP04) */
+.rbt-match-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rbt-match-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.rbt-status-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.rbt-status-pill--Solicitado { background-color: #fff8e1; color: #b8860b; }
+.rbt-status-pill--Aceptado { background-color: #e8f5e9; color: #2e7d32; }
+.rbt-status-pill--EnTraslado { background-color: #eef2ff; color: #3949ab; }
+.rbt-status-pill--Entregado { background-color: #e0f2f1; color: #00695c; }
+.rbt-status-pill--Rechazado { background-color: #fdecea; color: #c62828; }
+
+.rbt-match-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.rbt-empty-state {
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    padding: 30px 10px;
+}
+
+@media (max-width: 480px) {
+    .rbt-toast-host { left: 16px; right: 16px; top: 12px; }
+    .rbt-toast { max-width: none; }
+}
+
+/* Selección de rol en registro (US-001) */
+.rbt-role-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.rbt-role-btn {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.rbt-role-btn:hover { border-color: #2e7d32; background-color: #f2f8f2; }
+
+.rbt-role-btn--active {
+    border-color: #2e7d32;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* Panel: select de categoría + paneles de una sola columna (Matches/Mapa) */
+.panel-form select {
+    width: 100%;
+    padding: 11px 14px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #555;
+    background-color: #fafafa;
+}
+
+.panel-body--single {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 992px) {
+    #miembrosCard .panel-form {
+        flex-direction: column !important;
+    }
+}

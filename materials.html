@@ -35,12 +35,22 @@
             <p>Materiales validados, trazables y cercanos para infraestructura comunitaria.</p>
         </section>
 
-        <section class="filters-grid">
-            <div class="filter-box">Material</div>
-            <div class="filter-box">Distrito / zona</div>
-            <div class="filter-box">Volumen</div>
-            <div class="filter-box">Validación técnica</div>
+        <section class="filters-grid" id="categoryFilters">
+            <div class="filter-box" data-categoria="Todos">Todos</div>
+            <div class="filter-box" data-categoria="Ladrillo">Ladrillo</div>
+            <div class="filter-box" data-categoria="Hormigón">Hormigón</div>
+            <div class="filter-box" data-categoria="Metal">Metal</div>
         </section>
+
+        <div class="rbt-search-row">
+            <input type="text" id="districtSearch" placeholder="Buscar por distrito o dirección (ej. San Borja)">
+            <button class="primary-btn" id="districtSearchBtn">Buscar</button>
+        </div>
+
+        <div class="rbt-toggle-row">
+            <span>Recibir alertas cuando se registre material cercano a mi zona</span>
+            <button class="rbt-switch" id="proximityToggle" aria-label="Activar alertas de proximidad"></button>
+        </div>
 
         <div class="main-content-split">
             
@@ -51,20 +61,12 @@
 
             <section class="content-card results-card">
                 <h2>Resultados disponibles</h2>
-                <div class="results-list">
-                    <div class="result-item alert-yellow">
-                        <strong>Ladrillo · 1.2 km · ficha técnica</strong>
-                    </div>
-                    <div class="result-item alert-green">
-                        <strong>Fierro · 2.8 km · reputación validada</strong>
-                    </div>
-                    <div class="result-item alert-green">
-                        <strong>Madera/concreto · 3.1 km · disponible</strong>
-                    </div>
+                <div class="results-list" id="resultsList">
+                    <!-- Se renderiza dinámicamente desde RBT.materiales -->
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn-orange">Solicitar donación</button>
-                    <button class="btn btn-green">Coordinar recepción</button>
+                    <button class="btn btn-orange" id="requestDonationBtn">Solicitar donación</button>
+                    <button class="btn btn-green" id="coordinateReceptionBtn">Coordinar recepción</button>
                 </div>
             </section>
         </div>
@@ -87,20 +89,135 @@
         </p>
     </footer>
 
+    <script src="public/assets/scripts/main.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Inicializa el mapa centrado en Lima Metropolitana
+        /* ============================================================
+           Página: materials.html
+           US-003/004 Marketplace y mapa · US-005/026 Filtros
+           US-011 Alertas de proximidad · US-018/028 Búsqueda por distrito
+           US-023/025/027 Detalle técnico del material · US-006 Solicitar match
+           ============================================================ */
         const map = L.map('map').setView([-12.093, -77.036], 13);
-
-        // Renderiza el mapa gráfico de OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap'
         }).addTo(map);
 
-        // Añade los pines interactivos de los materiales (RCD) con popups descriptivos
-        L.marker([-12.085, -77.040]).addTo(map).bindPopup("<b>Metal recuperado</b><br>280 kg | CO2: 1.1 t");
-        L.marker([-12.095, -77.015]).addTo(map).bindPopup("<b>Ladrillos reutilizables</b><br>500 und | CO2: 0.4 t");
-        L.marker([-12.110, -77.035]).addTo(map).bindPopup("<b>Concreto triturado</b><br>12 m³ | CO2: 0.6 t");
+        let markers = [];
+        let filtroCategoria = "Todos";
+        let filtroDistrito = "";
+        let materialSeleccionadoId = null;
+
+        function pintarBadge(mat) {
+            if (mat.estado === "Disponible") return "alert-green";
+            return "alert-yellow";
+        }
+
+        function renderResultados() {
+            const lista = RBT.materiales.all().filter(m => {
+                const pasaCategoria = filtroCategoria === "Todos" || m.categoria === filtroCategoria;
+                const pasaDistrito = !filtroDistrito || m.distrito.toLowerCase().includes(filtroDistrito.toLowerCase());
+                return pasaCategoria && pasaDistrito;
+            });
+
+            const cont = document.getElementById("resultsList");
+            cont.innerHTML = "";
+
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            if (lista.length === 0) {
+                cont.innerHTML = `<div class="rbt-empty-state">No hay materiales que coincidan con tu búsqueda.</div>`;
+                return;
+            }
+
+            lista.forEach(mat => {
+                const row = document.createElement("div");
+                row.className = `result-item ${pintarBadge(mat)}`;
+                row.innerHTML = `
+                    <strong>${mat.tipo} · ${mat.distanciaKm} km · ${mat.distrito}</strong>
+                    <button class="rbt-mini-btn" data-id="${mat.id}">Ver ficha</button>
+                `;
+                row.querySelector(".rbt-mini-btn").addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    abrirDetalle(mat);
+                });
+                row.addEventListener("click", () => abrirDetalle(mat));
+                cont.appendChild(row);
+
+                const marker = L.marker([mat.lat, mat.lng]).addTo(map)
+                    .bindPopup(`<b>${mat.tipo}</b><br>${mat.volumen} | CO2: ${mat.co2} t`);
+                markers.push(marker);
+            });
+        }
+
+        // US-023/025/027: detalle técnico completo del material
+        function abrirDetalle(mat) {
+            materialSeleccionadoId = mat.id;
+            const overlay = RBT.openModal(`
+                <h3>${mat.tipo}</h3>
+                <p>Ficha técnica del material publicado.</p>
+                <div class="rbt-modal-row"><span>Categoría</span><span>${mat.categoria}</span></div>
+                <div class="rbt-modal-row"><span>Volumen</span><span>${mat.volumen}</span></div>
+                <div class="rbt-modal-row"><span>Distrito</span><span>${mat.distrito}</span></div>
+                <div class="rbt-modal-row"><span>Distancia</span><span>${mat.distanciaKm} km</span></div>
+                <div class="rbt-modal-row"><span>CO2 estimado</span><span>${mat.co2} t</span></div>
+                <div class="rbt-modal-row"><span>Estado</span><span>${mat.estado}</span></div>
+                <button class="primary-btn" id="matchFromDetailBtn" style="width:100%; margin-top:16px;">Hacer Match</button>
+                <button class="rbt-modal-close" id="closeDetailBtn">Cerrar</button>
+            `);
+            overlay.querySelector("#closeDetailBtn").addEventListener("click", RBT.closeModal);
+            overlay.querySelector("#matchFromDetailBtn").addEventListener("click", () => {
+                RBT.matches.add(mat.id, mat.tipo);
+                RBT.closeModal();
+                RBT.toast("Solicitud de match enviada a la constructora.");
+            });
+        }
+
+        // US-005/026: filtros por categoría
+        document.querySelectorAll("#categoryFilters .filter-box").forEach(box => {
+            box.addEventListener("click", () => {
+                document.querySelectorAll("#categoryFilters .filter-box").forEach(b => b.classList.remove("filter-box--active"));
+                box.classList.add("filter-box--active");
+                filtroCategoria = box.dataset.categoria;
+                renderResultados();
+            });
+        });
+        document.querySelector('#categoryFilters .filter-box[data-categoria="Todos"]').classList.add("filter-box--active");
+
+        // US-018/028: búsqueda por distrito
+        document.getElementById("districtSearchBtn").addEventListener("click", () => {
+            filtroDistrito = document.getElementById("districtSearch").value.trim();
+            renderResultados();
+            RBT.toast(filtroDistrito ? `Mostrando resultados cercanos a "${filtroDistrito}".` : "Mostrando todos los materiales.");
+        });
+        document.getElementById("districtSearch").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") { e.preventDefault(); document.getElementById("districtSearchBtn").click(); }
+        });
+
+        // US-011: alertas de proximidad
+        const proximityToggle = document.getElementById("proximityToggle");
+        let alertasActivas = localStorage.getItem("rbt_alertas") === "1";
+        if (alertasActivas) proximityToggle.classList.add("rbt-switch--on");
+        proximityToggle.addEventListener("click", () => {
+            alertasActivas = !alertasActivas;
+            proximityToggle.classList.toggle("rbt-switch--on", alertasActivas);
+            localStorage.setItem("rbt_alertas", alertasActivas ? "1" : "0");
+            RBT.toast(alertasActivas
+                ? "Alertas activadas. Te avisaremos sobre nuevos materiales cercanos."
+                : "Alertas de proximidad desactivadas.");
+        });
+
+        // US-006/007: solicitar match / coordinar recepción desde los botones inferiores
+        document.getElementById("requestDonationBtn").addEventListener("click", () => {
+            const lista = RBT.materiales.all();
+            if (lista[0]) { RBT.matches.add(lista[0].id, lista[0].tipo); RBT.toast("Solicitud de donación enviada."); }
+        });
+        document.getElementById("coordinateReceptionBtn").addEventListener("click", () => {
+            RBT.toast("Recepción coordinada. Revisa el estado en Reportes > Matches.");
+        });
+
+        renderResultados();
     </script>
 </body>
 </html>
