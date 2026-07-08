@@ -34,25 +34,41 @@
         </section>
 
         <section class="hero-content">
-            <h2>CREAR CUENTA NUEVA</h2>
-            
-            <div class="info-content">
-                 <p>Nombre de la empresa</p>
-                 <input type="text">
+            <h2 id="registerStepTitle">CREAR CUENTA NUEVA</h2>
 
-                 <p>Correo electrónico</p>
-                 <input type="email">
+            <form id="registerForm" novalidate>
+                <div class="info-content" id="registerFields">
+                     <p>Nombre de la empresa</p>
+                     <input type="text" id="regEmpresa" autocomplete="organization">
 
-                 <p>Contraseña</p>
-                 <input type="password" placeholder="••••••••">
-                 <p>Debe tener al menos 8 caracteres</p>
+                     <p>Correo electrónico</p>
+                     <input type="email" id="regCorreo" autocomplete="email">
 
-                 <p>Confirmar contraseña</p>
-                 <input type="password" placeholder="••••••••">
-            </div>
-            
-            <a href="dashboard.html" class="primary-btn" style="text-decoration: none; display: inline-block; text-align: center;">REGISTRARSE</a>
-            
+                     <p>Contraseña</p>
+                     <input type="password" id="regPass" placeholder="••••••••" autocomplete="new-password">
+                     <p>Debe tener al menos 8 caracteres</p>
+
+                     <p>Confirmar contraseña</p>
+                     <input type="password" id="regPassConfirm" placeholder="••••••••" autocomplete="new-password">
+                </div>
+
+                <!-- US-001: Selección de rol institucional (paso posterior al registro) -->
+                <div class="info-content" id="roleStep" style="display:none;">
+                    <p>Elige el tipo de organización</p>
+                    <div class="rbt-role-options">
+                        <button type="button" class="rbt-role-btn" data-rol="Constructora">Constructora / Ingeniero</button>
+                        <button type="button" class="rbt-role-btn" data-rol="ONG">Gobierno Local / ONG</button>
+                    </div>
+                </div>
+
+                <!-- US-021: Verificación de correo electrónico (simulada) -->
+                <div class="info-content" id="verifyStep" style="display:none;">
+                    <p>Enviamos un enlace de verificación a tu correo electrónico. Tu cuenta permanecerá inactiva hasta confirmarla.</p>
+                    <button type="button" class="primary-btn" id="simulateVerifyBtn" style="width:100%;">He verificado mi correo</button>
+                </div>
+
+                <button type="submit" class="primary-btn" id="registerSubmitBtn" style="width:100%;">REGISTRARSE</button>
+            </form>
         </section>
     </main>
 
@@ -216,5 +232,78 @@
         </p>
     </footer>
     <script src="public/assets/scripts/main.js"></script>
+    <script>
+        /* ============================================================
+           Página: index.html
+           US-001 Selección de rol · US-002 (validación previa al panel)
+           US-021 Verificación de correo electrónico (simulada)
+           ============================================================ */
+        const registerForm = document.getElementById("registerForm");
+
+        if (registerForm) {
+            let rolSeleccionado = null;
+
+            const camposRegistro = ["regEmpresa", "regCorreo", "regPass", "regPassConfirm"];
+            RBT.autosaveAttach("registro", camposRegistro);
+            if (RBT.autosaveRestore("registro", camposRegistro)) {
+                RBT.toast("Recuperamos los datos de tu registro anterior.");
+            }
+
+            registerForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const empresa = document.getElementById("regEmpresa");
+                const correo = document.getElementById("regCorreo");
+                const pass = document.getElementById("regPass");
+                const passConfirm = document.getElementById("regPassConfirm");
+
+                [empresa, correo, pass, passConfirm].forEach(RBT.clearError);
+                let valido = true;
+
+                if (!empresa.value.trim()) { RBT.markError(empresa, "Ingresa el nombre de tu empresa u organización."); valido = false; }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value.trim())) { RBT.markError(correo, "Ingresa un correo electrónico válido."); valido = false; }
+                if (pass.value.length < 8) { RBT.markError(pass, "La contraseña debe tener al menos 8 caracteres."); valido = false; }
+                if (passConfirm.value !== pass.value || !passConfirm.value) { RBT.markError(passConfirm, "Las contraseñas no coinciden."); valido = false; }
+
+                if (!valido) {
+                    RBT.toast("Revisa los campos marcados en rojo.", "error");
+                    return;
+                }
+
+                // Formulario válido -> pasamos al paso de selección de rol (US-001)
+                document.getElementById("registerFields").style.display = "none";
+                document.getElementById("registerStepTitle").textContent = "ELIGE TU ROL";
+                document.getElementById("roleStep").style.display = "block";
+                document.getElementById("registerSubmitBtn").style.display = "none";
+                RBT.toast("Datos validados correctamente.");
+            });
+
+            document.querySelectorAll(".rbt-role-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".rbt-role-btn").forEach(b => b.classList.remove("rbt-role-btn--active"));
+                    btn.classList.add("rbt-role-btn--active");
+                    rolSeleccionado = btn.dataset.rol;
+
+                    // Avanza automáticamente al paso de verificación de correo (US-021)
+                    document.getElementById("roleStep").style.display = "none";
+                    document.getElementById("registerStepTitle").textContent = "VERIFICA TU CORREO";
+                    document.getElementById("verifyStep").style.display = "block";
+                });
+            });
+
+            document.getElementById("simulateVerifyBtn").addEventListener("click", () => {
+                RBT.session.start({
+                    empresa: document.getElementById("regEmpresa").value.trim(),
+                    correo: document.getElementById("regCorreo").value.trim(),
+                    rol: rolSeleccionado || "Constructora"
+                });
+                RBT.autosaveClear("registro");
+                RBT.toast("Cuenta verificada. ¡Bienvenido a Re-Build Tech!");
+                setTimeout(() => {
+                    window.location.href = rolSeleccionado === "ONG" ? "materials.html" : "dashboard.html#panel";
+                }, 600);
+            });
+        }
+    </script>
 </body>
 </html>

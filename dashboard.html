@@ -37,15 +37,15 @@
                     <span class="side-icon chart-icon"></span>
                     Reportes
                 </a>
-                <a class="report-side-link" href="#reportes">
+                <a class="report-side-link" href="#reportes" id="downloadReportLink">
                     <span class="side-icon download-icon"></span>
                     Descargar
                 </a>
-                <a class="report-side-link" href="#reportes">
+                <a class="report-side-link" href="#reportes" id="historyReportLink">
                     <span class="side-icon clock-icon"></span>
                     Historial
                 </a>
-                <a class="report-side-link" href="#reportes">
+                <a class="report-side-link" href="#reportes" id="metricsReportLink">
                     <span class="side-icon metric-icon"></span>
                     Métricas
                 </a>
@@ -67,19 +67,19 @@
                     <article class="report-card">
                         <div class="summary-label">
                             <span class="summary-icon truck-icon"></span>
-                            Reciclaje Semanal
+                            Ahorro económico
                         </div>
-                        <strong>2 tn</strong>
-                        <p>Entre madera y escombros</p>
+                        <strong id="summaryAhorroEconomico">S/ 0</strong>
+                        <p>Estimado por reutilización</p>
                     </article>
 
-                    <article class="report-card">
+                    <article class="report-card" id="summaryImpactoSocialCard" style="cursor:pointer;">
                         <div class="summary-label">
                             <span class="summary-icon home-icon"></span>
-                            Viviendas beneficiadas
+                            Impacto social por comunidad
                         </div>
-                        <strong>12%</strong>
-                        <p>Por encima del promedio</p>
+                        <strong id="summaryProyectos">0</strong>
+                        <p>Proyectos / comunidades beneficiadas — toca para ver detalle</p>
                     </article>
                 </div>
 
@@ -115,16 +115,13 @@
                     </section>
 
                     <section class="report-panel match-panel">
-                        <h3>Desglose por match</h3>
+                        <h3>Desglose por categoría de material</h3>
                         <div class="donut-area">
                             <div class="donut-chart">
-                                <span>Total<br><strong>48</strong><br>matches</span>
+                                <span>Total<br><strong id="donutTotal">0</strong><br>lotes</span>
                             </div>
-                            <ul class="donut-legend">
-                                <li><span class="legend-dot wood"></span>Madera <strong>45%</strong></li>
-                                <li><span class="legend-dot debris"></span>Escombros <strong>35%</strong></li>
-                                <li><span class="legend-dot metal"></span>Metales <strong>15%</strong></li>
-                                <li><span class="legend-dot other"></span>Otros <strong>5%</strong></li>
+                            <ul class="donut-legend" id="donutLegend">
+                                <!-- Renderizado dinámico desde RBT.materiales -->
                             </ul>
                         </div>
                     </section>
@@ -170,61 +167,89 @@
             </div>
         </div>
 
-        <!-- KPI Cards -->
-        <div class="panel-kpis">
+        <!-- KPI Cards (US-008/020/029/031/038: alimentadas por RBT.metrics) -->
+        <div class="panel-kpis" id="panelKpis">
             <div class="panel-kpi-card">
-                <span class="panel-kpi-value">48 t</span>
+                <span class="panel-kpi-value" id="kpiToneladas">0 t</span>
                 <span class="panel-kpi-label">Toneladas registradas</span>
             </div>
             <div class="panel-kpi-card">
-                <span class="panel-kpi-value">62%</span>
+                <span class="panel-kpi-value" id="kpiPctReutilizado">0%</span>
                 <span class="panel-kpi-label">RCD reutilizado</span>
             </div>
             <div class="panel-kpi-card">
-                <span class="panel-kpi-value">12.4 t</span>
+                <span class="panel-kpi-value" id="kpiCo2">0 t</span>
                 <span class="panel-kpi-label">Ahorro CO2</span>
             </div>
             <div class="panel-kpi-card">
-                <span class="panel-kpi-value">7</span>
+                <span class="panel-kpi-value" id="kpiMatchesActivos">0</span>
                 <span class="panel-kpi-label">Matches activos</span>
             </div>
         </div>
 
-        <!-- Formulario + Lotes -->
-        <div class="panel-body">
+        <!-- Paneles por pestaña -->
+        <div class="panel-body" id="tabInventario">
 
-            <!-- Formulario: Registrar nuevo lote -->
+            <!-- Formulario: Registrar nuevo lote (US-002, US-022, US-036) -->
             <div class="panel-form-card">
                 <h3>Registrar nuevo lote RCD</h3>
-                <div class="panel-form">
-                    <input type="text" placeholder="Tipo de material">
-                    <input type="text" placeholder="Volumen disponible">
-                    <input type="text" placeholder="Estado del residuo">
-                    <input type="text" placeholder="Ubicación de obra">
-                    <input type="text" placeholder="Foto / evidencia">
-                    <button class="primary-btn panel-form-btn">Guardar lote</button>
+                <div class="panel-form" id="loteForm">
+                    <input type="text" id="loteTipo" placeholder="Tipo de material">
+                    <select id="loteCategoria">
+                        <option value="Hormigón">Hormigón</option>
+                        <option value="Ladrillo">Ladrillo</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Madera">Madera</option>
+                    </select>
+                    <input type="text" id="loteVolumen" placeholder="Volumen disponible (ej. 8 m3)">
+                    <div class="rbt-search-row" style="margin-bottom:12px;">
+                        <input type="text" id="loteObra" placeholder="Ubicación de obra (ej. San Borja)" list="obrasList">
+                        <datalist id="obrasList"></datalist>
+                        <button type="button" class="rbt-icon-btn" id="nuevaObraBtn">+ Nueva obra</button>
+                    </div>
+                    <input type="text" id="loteFoto" placeholder="Foto / evidencia (nombre de archivo)">
+                    <button type="button" class="primary-btn panel-form-btn" id="guardarLoteBtn">Guardar lote</button>
                 </div>
             </div>
 
-            <!-- Lotes en seguimiento -->
+            <!-- Lotes en seguimiento (US-014 baja, US-017 edición) -->
             <div class="panel-lotes-card">
                 <h3>Lotes en seguimiento</h3>
-                <div class="panel-lotes">
-                    <div class="panel-lote panel-lote--disponible">
-                        <span class="panel-lote-dot panel-lote-dot--disponible"></span>
-                        <span>Concreto triturado · <strong>Disponible</strong> · San Borja</span>
-                    </div>
-                    <div class="panel-lote panel-lote--solicitado">
-                        <span class="panel-lote-dot panel-lote-dot--solicitado"></span>
-                        <span>Ladrillos · <strong>Solicitado</strong> · La Molina</span>
-                    </div>
-                    <div class="panel-lote panel-lote--traslado">
-                        <span class="panel-lote-dot panel-lote-dot--traslado"></span>
-                        <span>Metal recuperado · <strong>En traslado</strong> · San Isidro</span>
-                    </div>
+                <div class="panel-lotes" id="lotesContainer">
+                    <!-- Renderizado dinámico desde RBT.materiales -->
                 </div>
             </div>
 
+        </div>
+
+        <!-- Matches (EP04) -->
+        <div class="panel-body panel-body--single" id="tabMatches" style="display:none;">
+            <div class="panel-lotes-card" style="width:100%;">
+                <h3>Solicitudes de match</h3>
+                <div id="matchesContainer" class="panel-lotes"></div>
+            </div>
+        </div>
+
+        <!-- Mapa (redirige al mapa completo de Materiales) -->
+        <div class="panel-body panel-body--single" id="tabMapa" style="display:none;">
+            <div class="panel-lotes-card" style="width:100%; text-align:center;">
+                <h3>Mapa de obras y materiales</h3>
+                <p style="color:#666; margin-bottom:16px;">El mapa interactivo completo está disponible en la sección de Materiales.</p>
+                <a href="materials.html" class="primary-btn" style="text-decoration:none; display:inline-block;">Ir al mapa de materiales</a>
+            </div>
+        </div>
+
+        <!-- Miembros de la organización (US-037) -->
+        <div class="panel-lotes-card" style="margin-top:24px;" id="miembrosCard">
+            <div class="panel-title-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin-bottom:0;">Miembros de la organización</h3>
+                <button type="button" class="rbt-icon-btn" id="editarPerfilBtn">Editar perfil organizacional</button>
+            </div>
+            <div class="panel-form" style="flex-direction:row; gap:10px; margin-bottom:16px;">
+                <input type="email" id="miembroCorreo" placeholder="correo@organizacion.com" style="margin-bottom:0;">
+                <button type="button" class="primary-btn" id="agregarMiembroBtn" style="white-space:nowrap;">Agregar</button>
+            </div>
+            <div id="miembrosContainer" class="panel-lotes"></div>
         </div>
     </section>
 
@@ -235,5 +260,485 @@
         </p>
     </footer>
     <script src="public/assets/scripts/main.js"></script>
+    <script>
+        /* ============================================================
+           Página: dashboard.html — Panel de control
+           EP02: US-002, 014, 017, 022, 036 · EP01: US-037
+           EP04: US-006, 007, 012, 013, 016, 019, 033, 034, 035, 040
+           ============================================================ */
+
+        /* ---------- Tabs (navegación consistente por rol, US-046-NF) ---------- */
+        const panelTabs = document.querySelectorAll(".panel-tab");
+        const tabPanels = {
+            0: "tabInventario",
+            1: "tabMapa",
+            2: "tabMatches",
+            3: null // Reportes: hace scroll a la sección ya existente
+        };
+        panelTabs.forEach((tab, idx) => {
+            tab.addEventListener("click", () => {
+                panelTabs.forEach(t => t.classList.remove("panel-tab--active"));
+                tab.classList.add("panel-tab--active");
+
+                if (idx === 3) {
+                    document.getElementById("reportes").scrollIntoView({ behavior: "smooth" });
+                    return;
+                }
+                RBT.showLoader();
+                Object.values(tabPanels).forEach(id => { if (id) document.getElementById(id).style.display = "none"; });
+                setTimeout(() => {
+                    document.getElementById(tabPanels[idx]).style.display = idx === 0 ? "grid" : "flex";
+                    RBT.hideLoader();
+                }, 180);
+            });
+        });
+
+        /* ---------- Datalist de obras (apoya US-036) ---------- */
+        function refrescarObrasList() {
+            const dl = document.getElementById("obrasList");
+            dl.innerHTML = RBT.obras.all().map(o => `<option value="${o.distrito}">`).join("");
+        }
+
+        /* ---------- Resumen: KPIs, donut y tarjetas de reporte (US-008/020/029/031/038) ---------- */
+        const categoriaColor = { "Hormigón": "wood", "Ladrillo": "debris", "Metal": "metal", "Madera": "other" };
+        function renderResumen() {
+            const t = RBT.metrics.totales();
+            document.getElementById("kpiToneladas").textContent = t.toneladas + " t";
+            document.getElementById("kpiPctReutilizado").textContent = t.pctReutilizado + "%";
+            document.getElementById("kpiCo2").textContent = t.co2Total + " t";
+            document.getElementById("kpiMatchesActivos").textContent = t.matchesActivos;
+            document.getElementById("summaryAhorroEconomico").textContent = "S/ " + t.ahorroEconomico.toLocaleString("es-PE");
+            document.getElementById("summaryProyectos").textContent = RBT.obras.all().length;
+
+            const mats = RBT.materiales.all();
+            const porCategoria = {};
+            mats.forEach(m => { porCategoria[m.categoria] = (porCategoria[m.categoria] || 0) + 1; });
+            const total = mats.length || 1;
+            document.getElementById("donutTotal").textContent = mats.length;
+            const legend = document.getElementById("donutLegend");
+            const cats = Object.keys(porCategoria);
+            legend.innerHTML = cats.length === 0
+                ? `<li style="color:#888;">Sin materiales registrados aún</li>`
+                : cats.map(c => {
+                    const pct = Math.round((porCategoria[c] / total) * 100);
+                    return `<li><span class="legend-dot ${categoriaColor[c] || "other"}"></span>${c} <strong>${pct}%</strong></li>`;
+                }).join("");
+        }
+
+        // US-039: detalle de impacto social por comunidad/obra
+        document.getElementById("summaryImpactoSocialCard").addEventListener("click", () => {
+            const obras = RBT.obras.all();
+            const entregados = RBT.matches.all().filter(m => m.estado === "Entregado");
+            const overlay = RBT.openModal(`
+                <h3>Impacto social por comunidad</h3>
+                <p>Comunidades y obras que han recibido materiales reutilizados.</p>
+                ${obras.map(o => `
+                    <div class="rbt-modal-row">
+                        <span>${o.nombre} (${o.distrito})</span>
+                        <span>${entregados.length} entregas totales</span>
+                    </div>
+                `).join("") || '<p style="color:#888;">Aún no hay obras registradas.</p>'}
+                <button class="rbt-modal-close" id="cerrarImpactoBtn">Cerrar</button>
+            `);
+            overlay.querySelector("#cerrarImpactoBtn").addEventListener("click", RBT.closeModal);
+        });
+
+        // US-048-NF: historial auditable de operaciones
+        document.getElementById("historyReportLink").addEventListener("click", (e) => {
+            e.preventDefault();
+            const entries = JSON.parse(localStorage.getItem(RBT.KEYS.LOG) || "[]");
+            const overlay = RBT.openModal(`
+                <h3>Historial auditable</h3>
+                <p>Registro de acciones clave: quién, qué y cuándo.</p>
+                <div style="max-height:280px; overflow-y:auto;">
+                    ${entries.slice(0, 30).map(en => `
+                        <div class="rbt-modal-row">
+                            <span>${en.accion}${en.detalle ? " · " + en.detalle : ""}</span>
+                            <span>${en.fecha}</span>
+                        </div>
+                    `).join("") || '<p style="color:#888;">Sin actividad registrada todavía.</p>'}
+                </div>
+                <button class="rbt-modal-close" id="cerrarHistorialBtn">Cerrar</button>
+            `);
+            overlay.querySelector("#cerrarHistorialBtn").addEventListener("click", RBT.closeModal);
+        });
+
+        // US-032: historial de métricas ambientales (cada visita registra una foto del estado actual)
+        document.getElementById("metricsReportLink").addEventListener("click", (e) => {
+            e.preventDefault();
+            const historial = RBT.metrics.snapshot();
+            const overlay = RBT.openModal(`
+                <h3>Historial de métricas ambientales</h3>
+                <p>Cada consulta guarda una fotografía de tus indicadores de sostenibilidad.</p>
+                <div style="max-height:280px; overflow-y:auto;">
+                    ${historial.slice(0, 20).map(h => `
+                        <div class="rbt-modal-row">
+                            <span>${h.fecha}</span>
+                            <span>CO2: ${h.co2Total} t · Reutilizado: ${h.pctReutilizado}%</span>
+                        </div>
+                    `).join("")}
+                </div>
+                <button class="rbt-modal-close" id="cerrarMetricasBtn">Cerrar</button>
+            `);
+            overlay.querySelector("#cerrarMetricasBtn").addEventListener("click", RBT.closeModal);
+        });
+
+        // US-036: registrar una nueva obra desde el formulario de inventario
+        document.getElementById("nuevaObraBtn").addEventListener("click", () => {
+            const overlay = RBT.openModal(`
+                <h3>Registrar nueva obra</h3>
+                <div class="info-content">
+                    <p>Nombre de la obra</p>
+                    <input type="text" id="obraNombre" placeholder="Ej. Obra Surco">
+                    <p>Distrito</p>
+                    <input type="text" id="obraDistrito" placeholder="Ej. Surco">
+                    <p>Responsable</p>
+                    <input type="text" id="obraResponsable" placeholder="Ej. Constructora Andina">
+                </div>
+                <button class="primary-btn" id="guardarObraBtn" style="width:100%;">Guardar obra</button>
+                <button class="rbt-modal-close" id="cancelarObraBtn">Cancelar</button>
+            `);
+            overlay.querySelector("#cancelarObraBtn").addEventListener("click", RBT.closeModal);
+            overlay.querySelector("#guardarObraBtn").addEventListener("click", () => {
+                const nombre = overlay.querySelector("#obraNombre");
+                const distrito = overlay.querySelector("#obraDistrito");
+                if (!nombre.value.trim() || !distrito.value.trim()) {
+                    RBT.toast("Completa nombre y distrito de la obra.", "error");
+                    return;
+                }
+                RBT.obras.add({
+                    nombre: nombre.value.trim(),
+                    distrito: distrito.value.trim(),
+                    responsable: overlay.querySelector("#obraResponsable").value.trim() || "Sin asignar"
+                });
+                refrescarObrasList();
+                document.getElementById("loteObra").value = distrito.value.trim();
+                RBT.closeModal();
+                RBT.toast("Obra registrada correctamente.");
+                renderResumen();
+            });
+        });
+
+        // US-010: edición de perfil organizacional
+        document.getElementById("editarPerfilBtn").addEventListener("click", () => {
+            const s = RBT.session.get() || {};
+            const overlay = RBT.openModal(`
+                <h3>Perfil organizacional</h3>
+                <div class="info-content">
+                    <p>Nombre de la organización</p>
+                    <input type="text" id="perfilNombre" value="${s.empresa || ""}">
+                    <p>Correo de contacto</p>
+                    <input type="email" id="perfilCorreo" value="${s.correo || ""}">
+                </div>
+                <button class="primary-btn" id="guardarPerfilBtn" style="width:100%;">Guardar cambios</button>
+                <button class="rbt-modal-close" id="cancelarPerfilBtn">Cancelar</button>
+            `);
+            overlay.querySelector("#cancelarPerfilBtn").addEventListener("click", RBT.closeModal);
+            overlay.querySelector("#guardarPerfilBtn").addEventListener("click", () => {
+                const correo = overlay.querySelector("#perfilCorreo");
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value.trim())) {
+                    RBT.markError(correo, "Ingresa un correo válido.");
+                    return;
+                }
+                const nuevo = { ...s, empresa: overlay.querySelector("#perfilNombre").value.trim(), correo: correo.value.trim() };
+                RBT.session.start(nuevo);
+                RBT.log("Actualización de perfil organizacional", nuevo.empresa);
+                RBT.closeModal();
+                RBT.toast("Perfil actualizado correctamente.");
+            });
+        });
+
+        /* ---------- Inventario: alta, edición y baja de lotes ---------- */
+        const estadoOrden = ["Disponible", "Solicitado", "En traslado", "Entregado"];
+        function claseEstado(estado) {
+            if (estado === "Disponible") return "panel-lote--disponible";
+            if (estado === "Solicitado") return "panel-lote--solicitado";
+            return "panel-lote--traslado";
+        }
+        function dotEstado(estado) {
+            if (estado === "Disponible") return "panel-lote-dot--disponible";
+            if (estado === "Solicitado") return "panel-lote-dot--solicitado";
+            return "panel-lote-dot--traslado";
+        }
+
+        function renderLotes() {
+            const cont = document.getElementById("lotesContainer");
+            const lotes = RBT.materiales.all();
+            if (lotes.length === 0) {
+                cont.innerHTML = `<div class="rbt-empty-state">Aún no registras materiales. Usa el formulario para publicar tu primer lote.</div>`;
+                renderResumen();
+                return;
+            }
+            cont.innerHTML = lotes.map(m => `
+                <div class="panel-lote ${claseEstado(m.estado)}" data-id="${m.id}">
+                    <div class="panel-lote-info">
+                        <span class="panel-lote-dot ${dotEstado(m.estado)}"></span>
+                        <span>${m.tipo} · <strong>${m.estado}</strong> · ${m.distrito}</span>
+                    </div>
+                    <div class="panel-lote-actions">
+                        <button class="rbt-icon-btn" data-action="editar" data-id="${m.id}">Editar</button>
+                        <button class="rbt-icon-btn rbt-icon-btn--danger" data-action="baja" data-id="${m.id}">Dar de baja</button>
+                    </div>
+                </div>
+            `).join("");
+
+            cont.querySelectorAll('[data-action="baja"]').forEach(btn => {
+                btn.addEventListener("click", () => {
+                    RBT.materiales.remove(btn.dataset.id);
+                    RBT.toast("Material dado de baja del inventario.");
+                    renderLotes();
+                });
+            });
+            cont.querySelectorAll('[data-action="editar"]').forEach(btn => {
+                btn.addEventListener("click", () => abrirEdicionLote(btn.dataset.id));
+            });
+            renderResumen();
+        }
+
+        function abrirEdicionLote(id) {
+            const mat = RBT.materiales.all().find(m => m.id === id);
+            if (!mat) return;
+            const overlay = RBT.openModal(`
+                <h3>Editar material</h3>
+                <div class="info-content">
+                    <p>Volumen</p>
+                    <input type="text" id="editVolumen" value="${mat.volumen}">
+                    <p>Estado</p>
+                    <select id="editEstado" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; margin-bottom:15px;">
+                        ${estadoOrden.map(s => `<option value="${s}" ${s === mat.estado ? "selected" : ""}>${s}</option>`).join("")}
+                    </select>
+                </div>
+                <button class="primary-btn" id="saveEditBtn" style="width:100%;">Guardar cambios</button>
+                <button class="rbt-modal-close" id="cancelEditBtn">Cancelar</button>
+            `);
+            overlay.querySelector("#cancelEditBtn").addEventListener("click", RBT.closeModal);
+            overlay.querySelector("#saveEditBtn").addEventListener("click", () => {
+                RBT.materiales.update(id, {
+                    volumen: overlay.querySelector("#editVolumen").value,
+                    estado: overlay.querySelector("#editEstado").value
+                });
+                RBT.closeModal();
+                RBT.toast("Inventario actualizado.");
+                renderLotes();
+            });
+        }
+
+        document.getElementById("guardarLoteBtn").addEventListener("click", () => {
+            const tipo = document.getElementById("loteTipo");
+            const volumen = document.getElementById("loteVolumen");
+            const obra = document.getElementById("loteObra");
+            [tipo, volumen, obra].forEach(RBT.clearError);
+            let valido = true;
+            if (!tipo.value.trim()) { RBT.markError(tipo, "Indica el tipo de material."); valido = false; }
+            if (!volumen.value.trim()) { RBT.markError(volumen, "Indica el volumen disponible."); valido = false; }
+            if (!obra.value.trim()) { RBT.markError(obra, "Indica la obra o distrito de origen."); valido = false; }
+            if (!valido) { RBT.toast("Completa los campos obligatorios.", "error"); return; }
+
+            RBT.materiales.add({
+                tipo: tipo.value.trim(),
+                categoria: document.getElementById("loteCategoria").value,
+                volumen: volumen.value.trim(),
+                distrito: obra.value.trim(),
+                co2: (Math.random() * 1.2 + 0.2).toFixed(1) * 1,
+                distanciaKm: (Math.random() * 4 + 0.5).toFixed(1) * 1,
+                lat: -12.09 + (Math.random() - 0.5) * 0.05,
+                lng: -77.03 + (Math.random() - 0.5) * 0.05
+            });
+            [tipo, volumen, obra].forEach(i => i.value = "");
+            document.getElementById("loteFoto").value = "";
+            RBT.autosaveClear("lote");
+            RBT.toast("Material publicado en el inventario.");
+            renderLotes();
+        });
+
+        /* ---------- Matches (EP04) ---------- */
+        function siguienteEstado(estado) {
+            if (estado === "Solicitado") return "Aceptado";
+            if (estado === "Aceptado") return "EnTraslado";
+            if (estado === "EnTraslado") return "Entregado";
+            return "Entregado";
+        }
+        function etiquetaEstado(estado) {
+            return { Solicitado: "Solicitado", Aceptado: "Aceptado", EnTraslado: "En traslado", Entregado: "Entregado", Rechazado: "Rechazado" }[estado] || estado;
+        }
+
+        function renderMatches() {
+            const cont = document.getElementById("matchesContainer");
+            const lista = RBT.matches.all();
+            renderResumen();
+            if (lista.length === 0) {
+                cont.innerHTML = `<div class="rbt-empty-state">Aún no hay solicitudes de match. Publica materiales para recibir solicitudes o solicita uno desde "Materiales".</div>`;
+                return;
+            }
+            cont.innerHTML = lista.map(m => `
+                <div class="rbt-match-card" data-id="${m.id}">
+                    <div class="rbt-match-top">
+                        <strong>${m.materialNombre}</strong>
+                        <span class="rbt-status-pill rbt-status-pill--${m.estado}">${etiquetaEstado(m.estado)}</span>
+                    </div>
+                    <small style="color:#888;">Creado: ${m.creadoEn}${m.recojo ? " · Recojo: " + m.recojo : ""}${m.evidencia ? " · Evidencia adjunta ✔" : ""}${m.calificacion ? " · Calificación: " + m.calificacion + "★" : ""}</small>
+                    <div class="rbt-match-actions">
+                        ${m.estado === "Solicitado" ? `
+                            <button class="rbt-icon-btn" data-action="aceptar" data-id="${m.id}">Aceptar</button>
+                            <button class="rbt-icon-btn rbt-icon-btn--danger" data-action="rechazar" data-id="${m.id}">Rechazar</button>` : ""}
+                        ${m.estado === "Aceptado" ? `<button class="rbt-icon-btn" data-action="programar" data-id="${m.id}">Programar recojo</button>` : ""}
+                        ${m.estado === "EnTraslado" ? `<button class="rbt-icon-btn" data-action="qr" data-id="${m.id}">Escanear QR de entrega</button>` : ""}
+                        ${m.estado === "Entregado" && !m.calificacion ? `<button class="rbt-icon-btn" data-action="calificar" data-id="${m.id}">Calificar</button>` : ""}
+                        <button class="rbt-icon-btn" data-action="chat" data-id="${m.id}">Chat</button>
+                    </div>
+                </div>
+            `).join("");
+
+            cont.querySelectorAll('[data-action="aceptar"]').forEach(b => b.addEventListener("click", () => { RBT.matches.setEstado(b.dataset.id, "Aceptado"); RBT.toast("Match aceptado."); renderMatches(); }));
+            cont.querySelectorAll('[data-action="rechazar"]').forEach(b => b.addEventListener("click", () => { RBT.matches.setEstado(b.dataset.id, "Rechazado"); RBT.toast("Match rechazado.", "warn"); renderMatches(); }));
+
+            // US-013/035: escaneo de QR + evidencia fotográfica antes de cerrar la entrega
+            cont.querySelectorAll('[data-action="qr"]').forEach(b => b.addEventListener("click", () => {
+                const overlay = RBT.openModal(`
+                    <h3>Cerrar entrega</h3>
+                    <p>Escanea el código QR y adjunta una fotografía como evidencia del cierre.</p>
+                    <div class="info-content">
+                        <p>Evidencia fotográfica</p>
+                        <input type="file" id="evidenciaFoto" accept="image/*">
+                    </div>
+                    <button class="primary-btn" id="confirmarEntregaBtn" style="width:100%;">Confirmar entrega</button>
+                    <button class="rbt-modal-close" id="cancelarEntregaBtn">Cancelar</button>
+                `);
+                overlay.querySelector("#cancelarEntregaBtn").addEventListener("click", RBT.closeModal);
+                overlay.querySelector("#confirmarEntregaBtn").addEventListener("click", () => {
+                    const foto = overlay.querySelector("#evidenciaFoto");
+                    if (!foto.files || foto.files.length === 0) {
+                        RBT.toast("Adjunta una fotografía de evidencia para cerrar la entrega.", "error");
+                        return;
+                    }
+                    const list = RBT.matches.all().map(m => m.id === b.dataset.id ? { ...m, estado: "Entregado", evidencia: true } : m);
+                    RBT.matches.save(list);
+                    RBT.log("Entrega confirmada con evidencia", b.dataset.id);
+                    RBT.closeModal();
+                    RBT.toast("Código QR validado. Entrega confirmada con evidencia.");
+                    renderMatches();
+                });
+            }));
+
+            cont.querySelectorAll('[data-action="programar"]').forEach(b => b.addEventListener("click", () => {
+                const overlay = RBT.openModal(`
+                    <h3>Programar recojo</h3>
+                    <div class="info-content">
+                        <p>Fecha y hora</p>
+                        <input type="datetime-local" id="fechaRecojo">
+                    </div>
+                    <button class="primary-btn" id="confirmarRecojoBtn" style="width:100%;">Confirmar</button>
+                    <button class="rbt-modal-close" id="cancelarRecojoBtn">Cancelar</button>
+                `);
+                overlay.querySelector("#cancelarRecojoBtn").addEventListener("click", RBT.closeModal);
+                overlay.querySelector("#confirmarRecojoBtn").addEventListener("click", () => {
+                    const fecha = overlay.querySelector("#fechaRecojo").value;
+                    if (!fecha) { RBT.toast("Selecciona una fecha válida.", "error"); return; }
+                    const list = RBT.matches.all().map(m => m.id === b.dataset.id ? { ...m, recojo: fecha, estado: "EnTraslado" } : m);
+                    RBT.matches.save(list);
+                    RBT.closeModal();
+                    RBT.toast("Recojo programado. Ambas partes fueron notificadas.");
+                    renderMatches();
+                });
+            }));
+
+            cont.querySelectorAll('[data-action="calificar"]').forEach(b => b.addEventListener("click", () => {
+                const overlay = RBT.openModal(`
+                    <h3>Calificar experiencia</h3>
+                    <p>¿Qué tan confiable fue la contraparte en este intercambio?</p>
+                    <div class="rbt-role-options">
+                        ${[5,4,3].map(n => `<button type="button" class="rbt-role-btn" data-n="${n}">${"★".repeat(n)}${"☆".repeat(5-n)}</button>`).join("")}
+                    </div>
+                    <button class="rbt-modal-close" id="cancelarRatingBtn">Cancelar</button>
+                `);
+                overlay.querySelector("#cancelarRatingBtn").addEventListener("click", RBT.closeModal);
+                overlay.querySelectorAll("[data-n]").forEach(rb => rb.addEventListener("click", () => {
+                    const list = RBT.matches.all().map(m => m.id === b.dataset.id ? { ...m, calificacion: rb.dataset.n } : m);
+                    RBT.matches.save(list);
+                    RBT.closeModal();
+                    RBT.toast("Gracias por tu calificación.");
+                    renderMatches();
+                }));
+            }));
+
+            cont.querySelectorAll('[data-action="chat"]').forEach(b => b.addEventListener("click", () => {
+                const match = RBT.matches.all().find(m => m.id === b.dataset.id);
+                const overlay = RBT.openModal(`
+                    <h3>Chat de coordinación</h3>
+                    <div id="chatMensajes" style="max-height:180px; overflow-y:auto; margin-bottom:12px;">
+                        ${(match.mensajes || []).map(msg => `<p style="font-size:0.85rem; margin-bottom:6px;"><strong>${msg.de}:</strong> ${msg.texto}</p>`).join("") || '<p style="color:#888; font-size:0.85rem;">Aún no hay mensajes.</p>'}
+                    </div>
+                    <div class="info-content" style="margin-bottom:0;">
+                        <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+                    </div>
+                    <button class="primary-btn" id="enviarChatBtn" style="width:100%;">Enviar</button>
+                    <button class="rbt-modal-close" id="cerrarChatBtn">Cerrar</button>
+                `);
+                overlay.querySelector("#cerrarChatBtn").addEventListener("click", RBT.closeModal);
+                overlay.querySelector("#enviarChatBtn").addEventListener("click", () => {
+                    const input = overlay.querySelector("#chatInput");
+                    if (!input.value.trim()) return;
+                    const list = RBT.matches.all().map(m => {
+                        if (m.id === b.dataset.id) {
+                            const mensajes = m.mensajes || [];
+                            mensajes.push({ de: "Tú", texto: input.value.trim() });
+                            return { ...m, mensajes };
+                        }
+                        return m;
+                    });
+                    RBT.matches.save(list);
+                    RBT.toast("Mensaje enviado.");
+                    RBT.closeModal();
+                });
+            }));
+        }
+
+        /* ---------- Miembros (US-037) ---------- */
+        function renderMiembros() {
+            const cont = document.getElementById("miembrosContainer");
+            cont.innerHTML = RBT.miembros.all().map(u => `
+                <div class="panel-lote panel-lote--disponible">
+                    <div class="panel-lote-info">
+                        <span class="panel-lote-dot panel-lote-dot--disponible"></span>
+                        <span>${u.correo} · <strong>${u.rol}</strong></span>
+                    </div>
+                </div>
+            `).join("");
+        }
+        document.getElementById("agregarMiembroBtn").addEventListener("click", () => {
+            const input = document.getElementById("miembroCorreo");
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+                RBT.markError(input, "Ingresa un correo válido.");
+                return;
+            }
+            RBT.clearError(input);
+            RBT.miembros.add(input.value.trim());
+            input.value = "";
+            RBT.toast("Miembro agregado a la organización.");
+            renderMiembros();
+        });
+
+        refrescarObrasList();
+        renderLotes();
+        renderMatches();
+        renderMiembros();
+
+        /* ---------- US-042-NF / US-049-NF: autoguardado y recuperación de borrador ---------- */
+        const loteFieldIds = ["loteTipo", "loteCategoria", "loteVolumen", "loteObra", "loteFoto"];
+        RBT.autosaveAttach("lote", loteFieldIds);
+        if (RBT.autosaveRestore("lote", loteFieldIds)) {
+            RBT.toast("Recuperamos el borrador de tu último registro sin guardar.");
+        }
+
+        /* ---------- US-047-NF: cierre de sesión por inactividad ---------- */
+        RBT.watchInactivity(8);
+
+        /* ---------- US-015/030: Descarga de reporte ---------- */
+        document.getElementById("downloadReportLink").addEventListener("click", (e) => {
+            e.preventDefault();
+            RBT.toast("Generando reporte PDF...");
+            setTimeout(() => window.print(), 400);
+        });
+    </script>
 </body>
 </html>

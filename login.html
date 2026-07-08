@@ -30,20 +30,20 @@
             <p>Accede a tu cuenta para ver tu consumo de energía.</p>
         </div>
 
-        <form class="login-form">
+        <form class="login-form" id="loginForm" novalidate>
             <label>
                 <span>Correo Electrónico</span>
-                <input type="email" placeholder="Ingresa tu correo electrónico">
+                <input type="email" id="loginCorreo" placeholder="Ingresa tu correo electrónico">
             </label>
 
             <label>
                 <span>Contraseña</span>
-                <input type="password" placeholder="Ingresa tu contraseña">
+                <input type="password" id="loginPass" placeholder="Ingresa tu contraseña">
             </label>
 
             <div class="login-actions">
-                <button class="secondary-btn" type="button">Olvidé mi contraseña</button>
-                <a href="dashboard.html" class="primary-btn login-submit" style="text-decoration: none; display: inline-block; text-align: center;">Iniciar Sesión</a>
+                <button class="secondary-btn" type="button" id="forgotPassBtn">Olvidé mi contraseña</button>
+                <button type="submit" class="primary-btn login-submit">Iniciar Sesión</button>
             </div>
         </form>
     </section>
@@ -55,5 +55,51 @@
         </p>
     </footer>
     <script src="public/assets/scripts/main.js"></script>
+    <script>
+        /* ============================================================
+           Página: login.html
+           US-009 Recuperación de contraseña · US-047-NF Sesión segura
+           ============================================================ */
+        const loginForm = document.getElementById("loginForm");
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const correo = document.getElementById("loginCorreo");
+            const pass = document.getElementById("loginPass");
+            [correo, pass].forEach(RBT.clearError);
+            let valido = true;
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value.trim())) { RBT.markError(correo, "Ingresa un correo válido."); valido = false; }
+            if (!pass.value) { RBT.markError(pass, "Ingresa tu contraseña."); valido = false; }
+
+            if (!valido) { RBT.toast("Revisa tus credenciales.", "error"); return; }
+
+            RBT.session.start({ correo: correo.value.trim(), rol: "Constructora" });
+            RBT.toast("Sesión iniciada correctamente.");
+            setTimeout(() => { window.location.href = "dashboard.html#panel"; }, 500);
+        });
+
+        document.getElementById("forgotPassBtn").addEventListener("click", () => {
+            const overlay = RBT.openModal(`
+                <h3>Recuperar contraseña</h3>
+                <p>Ingresa tu correo electrónico registrado y te enviaremos un enlace de un solo uso.</p>
+                <div class="info-content">
+                    <input type="email" id="recoveryEmail" placeholder="tucorreo@empresa.com">
+                </div>
+                <button class="primary-btn" id="sendRecoveryBtn" style="width:100%;">Enviar enlace</button>
+                <button class="rbt-modal-close" id="closeRecoveryBtn">Cancelar</button>
+            `);
+            overlay.querySelector("#closeRecoveryBtn").addEventListener("click", RBT.closeModal);
+            overlay.querySelector("#sendRecoveryBtn").addEventListener("click", () => {
+                const input = overlay.querySelector("#recoveryEmail");
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+                    RBT.markError(input, "Ingresa un correo válido.");
+                    return;
+                }
+                RBT.closeModal();
+                RBT.toast("Enlace de restablecimiento enviado a tu correo.");
+            });
+        });
+    </script>
 </body>
 </html>
