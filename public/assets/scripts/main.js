@@ -41,6 +41,7 @@ const RBT = (() => {
         MATCHES: "rbt_matches",
         MIEMBROS: "rbt_miembros",
         LOG: "rbt_log",
+        METRICS: "rbt_metrics",
         DRAFT: "rbt_draft_"
     };
 
@@ -222,8 +223,132 @@ const RBT = (() => {
         if (hint) hint.remove();
     }
 
+    /* ---------- Métricas ambientales (US-020, 029, 031, 032, 038) ---------- */
+    function totalesActuales() {
+        const mats = materiales.all();
+        const entregados = matches.all().filter(m => m.estado === "Entregado");
+        const co2Total = mats.reduce((sum, m) => sum + (Number(m.co2) || 0), 0);
+        const toneladas = mats.length * 1.6; // aproximación por lote registrado
+        const pctReutilizado = mats.length ? Math.round((entregados.length / Math.max(mats.length, entregados.length)) * 100) : 0;
+        const ahorroEconomico = mats.length * 380 + entregados.length * 250; // S/ estimado por lote/entrega
+        return {
+            co2Total: Math.round(co2Total * 10) / 10,
+            toneladas: Math.round(toneladas * 10) / 10,
+            pctReutilizado,
+            matchesActivos: matches.all().filter(m => !["Entregado", "Rechazado"].includes(m.estado)).length,
+            ahorroEconomico,
+            entregados: entregados.length,
+            totalMateriales: mats.length
+        };
+    }
+
+    const metrics = {
+        totales: totalesActuales,
+        snapshot() {
+            const list = read(KEYS.METRICS, []);
+            list.unshift({ ...totalesActuales(), fecha: nowLabel() });
+            write(KEYS.METRICS, list.slice(0, 50));
+            return list;
+        },
+        historial() { return read(KEYS.METRICS, []); }
+    };
+
+    /* ---------- Autoguardado de formularios (US-042-NF, US-049-NF) ---------- */
+    function autosaveAttach(draftKey, fieldIds) {
+        const key = KEYS.DRAFT + draftKey;
+        let t = null;
+        fieldIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener("input", () => {
+                clearTimeout(t);
+                t = setTimeout(() => {
+                    const data = {};
+                    fieldIds.forEach(fid => {
+                        const f = document.getElementById(fid);
+                        if (f) data[fid] = f.value;
+                    });
+                    write(key, data);
+                }, 400);
+            });
+        });
+    }
+    function autosaveRestore(draftKey, fieldIds) {
+        const data = read(KEYS.DRAFT + draftKey, null);
+        if (!data) return false;
+        let hasValue = false;
+        fieldIds.forEach(fid => {
+            const f = document.getElementById(fid);
+            if (f && data[fid]) { f.value = data[fid]; hasValue = true; }
+        });
+        return hasValue;
+    }
+    function autosaveClear(draftKey) {
+        localStorage.removeItem(KEYS.DRAFT + draftKey);
+    }
+
+    /* ---------- Conectividad intermitente (US-042-NF) ---------- */
+    window.addEventListener("offline", () => toast("Sin conexión. Tus cambios se guardan localmente y no se perderán.", "warn"));
+    window.addEventListener("online", () => toast("Conexión restablecida. Sincronizando cambios pendientes..."));
+
+    /* ---------- Sesión segura: expiración por inactividad (US-047-NF) ---------- */
+    function watchInactivity(idleMinutes = 8) {
+        if (!session.get()) return;
+        let warned = false;
+        let timer = null;
+        const warnMs = (idleMinutes * 60 - 30) * 1000;
+        const outMs = idleMinutes * 60 * 1000;
+        let warnTimer, outTimer;
+
+        function reset() {
+            warned = false;
+            clearTimeout(warnTimer);
+            clearTimeout(outTimer);
+            warnTimer = setTimeout(() => {
+                warned = true;
+                toast("Tu sesión se cerrará en 30 segundos por inactividad.", "warn");
+            }, warnMs);
+            outTimer = setTimeout(() => {
+                session.end();
+                toast("Sesión cerrada por inactividad.", "error");
+                setTimeout(() => { window.location.href = "login.html"; }, 800);
+            }, outMs);
+        }
+        ["mousemove", "keydown", "click", "scroll"].forEach(evt =>
+            document.addEventListener(evt, reset, { passive: true })
+        );
+        reset();
+    }
+
+    /* ---------- Loader breve entre vistas (US-041-NF) ---------- */
+    function ensureLoaderBar() {
+        let bar = document.querySelector(".rbt-loader-bar");
+        if (!bar) {
+            bar = document.createElement("div");
+            bar.className = "rbt-loader-bar";
+            document.body.appendChild(bar);
+        }
+        return bar;
+    }
+    function showLoader() {
+        const bar = ensureLoaderBar();
+        bar.style.transition = "none";
+        bar.style.width = "0%";
+        requestAnimationFrame(() => {
+            bar.style.transition = "width 0.25s ease";
+            bar.style.width = "70%";
+        });
+    }
+    function hideLoader() {
+        const bar = ensureLoaderBar();
+        bar.style.width = "100%";
+        setTimeout(() => { bar.style.transition = "opacity 0.2s ease"; bar.style.opacity = "0"; }, 150);
+        setTimeout(() => { bar.style.width = "0%"; bar.style.opacity = "1"; }, 400);
+    }
+
     return {
-        KEYS, uid, nowLabel, session, materiales, obras, miembros, matches, log,
-        toast, openModal, closeModal, markError, clearError
+        KEYS, uid, nowLabel, session, materiales, obras, miembros, matches, metrics, log,
+        toast, openModal, closeModal, markError, clearError,
+        autosaveAttach, autosaveRestore, autosaveClear, watchInactivity, showLoader, hideLoader
     };
 })();

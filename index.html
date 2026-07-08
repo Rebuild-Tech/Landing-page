@@ -243,6 +243,12 @@
         if (registerForm) {
             let rolSeleccionado = null;
 
+            const camposRegistro = ["regEmpresa", "regCorreo", "regPass", "regPassConfirm"];
+            RBT.autosaveAttach("registro", camposRegistro);
+            if (RBT.autosaveRestore("registro", camposRegistro)) {
+                RBT.toast("Recuperamos los datos de tu registro anterior.");
+            }
+
             registerForm.addEventListener("submit", (e) => {
                 e.preventDefault();
 
@@ -291,6 +297,7 @@
                     correo: document.getElementById("regCorreo").value.trim(),
                     rol: rolSeleccionado || "Constructora"
                 });
+                RBT.autosaveClear("registro");
                 RBT.toast("Cuenta verificada. ¡Bienvenido a Re-Build Tech!");
                 setTimeout(() => {
                     window.location.href = rolSeleccionado === "ONG" ? "materials.html" : "dashboard.html#panel";
